@@ -1,0 +1,120 @@
+{
+  "levenshtein_threshold": 0.60,
+  "levenshtein_threshold_email": 0.80,
+
+  "influx_ip": "localhost",
+  "influx_port": 8086,
+  "influx_username": "Root",
+  "influx_password": "Verdades44!",
+  "influx_database": "tesis",
+
+  "virustotal_api": "d6234ba606d24e6ef626a19ef413a4267ce8f5d36cc281fee03d943adf23442d",
+  "abuseip_api": "a7801324f959cc65e9ccd1be6e550012821a238311cdebb6ae6764bdb8a6972249ed870545b9a9db",
+
+  "gmail_sender_email": "zelconsecure@gmail.com",
+  "gmail_app_password": "fotiaiqseaohhfjm",
+  "email_recipent": [
+    "alvaro.reyes@tenpo.cl", "ribert.chacon@tenpo.cl", "isaias.herrera@tenpo.cl",
+    "alvaro.reyes.e@usach.cl"
+  ],
+
+  "sslmate_enabled": true,
+  "sslmate_api_key": "k62512_lkgtHYPES72n4p8hkrU5",
+  "sslmate_monitored_domains": [
+    ".tenpo.cl",
+    ".bancoestado.cl", ".bancochile.cl", ".santander.cl", ".bci.cl",
+    ".falabella.cl", ".ripley.cl", ".consorcio.cl", ".security.cl", ".scotiabank.cl"
+  ],
+
+  "sslmate_webhook_host": "0.0.0.0",
+  "sslmate_webhook_port": 8787,
+  "sslmate_webhook_path": "/sslmate/webhook",
+  "sslmate_webhook_basic_user": "sslmate",
+  "sslmate_webhook_basic_pass": "holahola11",
+
+  "sslmate_auto_authorize_known": false,
+
+  "openphish_enabled": true,
+  "openphish_url": "https://openphish.com/feed.txt",
+  "poll_seconds_openphish": 300,
+
+  "urlhaus_enabled": true,
+  "urlhaus_recent_csv": "https://urlhaus.abuse.ch/downloads/csv_recent/",
+  "urlhaus_online_csv": "https://urlhaus.abuse.ch/downloads/csv_online/",
+  "poll_seconds_urlhaus": 300,
+
+  "phishtank_enabled": true,
+  "phishtank_csv": "https://data.phishtank.com/data/online-valid.csv",
+  "phishtank_app_key": "",
+  "poll_seconds_phishtank": 3600,
+
+  "sinking_enabled": true,
+  "sinking_base": "https://phish.sinking.yachts",
+  "sinking_recent_minutes": 60,
+  "poll_seconds_sinking": 120,
+
+  "ctwatch_enabled": true,
+  "ctwatch_poll_seconds": 300,
+  "ctwatch_brands": ["tenpo", "banco", "bank"],
+  "ctwatch_hosters": [
+    "sg-host.com","wpenginepowered.com","vercel.app","netlify.app","webflow.io",
+    "azurewebsites.net","pages.dev","appspot.com","firebaseapp.com","cloudfront.net",
+    "github.io","onrender.com","herokuapp.com","replit.dev","repl.co","glitch.me"
+  ],
+  "ctwatch_state_file": "ctwatch_seen.txt",
+
+  "threatfox_enabled": false,
+  "threatfox_api_url": "https://threatfox.abuse.ch/api/v1/",
+  "threatfox_api_key": "YOUR_ABUSE_CH_AUTH_KEY",
+
+  "spamhaus_enabled": false,
+  "spamhaus_domain_api_tmpl": "https://api.spamhaus.org/api/intel/v2/byobject/domain/{object}",
+  "spamhaus_ip_api_tmpl": "https://api.spamhaus.org/api/intel/v2/byobject/ip/{object}",
+  "spamhaus_bearer_jwt": "",
+  "spamhaus_api_key": "",
+
+  "dedupe_mode": "url",
+  "dedupe_ttl_hours": 24,
+
+  "watch_enabled": true,
+  "watch_terms": ["tenpo", "banco", "bank"],
+  "watch_threshold": 0.80,
+  "watch_only_matches": false,
+  "watch_tlds": [],
+
+  "notify_brand_terms": ["tenpo", "banco", "bank"],
+  "notify_malware_exts": ["exe", "ps1", "msi"],
+  "notify_terms_tenpo": ["tenpo"],
+  "notify_terms_banco": ["banco"],
+
+  "notify_terms_chile": [
+    "banco de chile", "bancochile", "banco chile",
+    "santander",
+    "bci",
+    "falabella",
+    "ripley",
+    "consorcio",
+    "bancoestado", "banco estado",
+    "security",
+    "scotiabank"
+  ],
+
+  "email_debug": true,
+  "brand_fuzzy_threshold_domain": 0.80,
+  "brand_allow_leetspeak": true,
+  "notify_check_url": true,
+
+  "email_burst_max": 10,
+  "email_window_min": 15,
+
+  "ctlogs_enabled": true,
+  "ctlogs_log_list_url": "https://www.gstatic.com/ct/log_list/v3/log_list.json",
+  "ctlogs_use_local_file": false,
+  "ctlogs_local_file_path": "C:/users/super User/downloads/log_list.json",
+  "ctlogs_checkpoint_dir": "./ct_checkpoints",
+  "ctlogs_batch_size": 2048,
+  "ctlogs_poll_seconds": 30,
+  "ctlogs_http_timeout": 20,
+  "ctlogs_sources_label": "ctlog"
+
+}

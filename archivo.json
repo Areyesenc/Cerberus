@@ -1,0 +1,187 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "influxdb",
+      "description": "Select your InfluxDB (InfluxQL) data source",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Eventos por fuente (conteo)",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 18, "x": 0, "y": 0 },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "right" },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "format": "time_series",
+          "groupBy": [],
+          "measurement": "phishing_candidates",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT count(\"url\") FROM \"phishing_candidates\" WHERE $timeFilter AND (\"source\" =~ /^$source$/) GROUP BY time($__interval), \"source\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ]
+    },
+    {
+      "title": "Top 10 dominios (por número de eventos)",
+      "type": "table",
+      "gridPos": { "h": 9, "w": 6, "x": 18, "y": 0 },
+      "options": {
+        "showHeader": true
+      },
+      "fieldConfig": {
+        "overrides": [],
+        "defaults": { "custom": { "align": "auto" } }
+      },
+      "targets": [
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "format": "table",
+          "policy": "default",
+          "rawQuery": true,
+          "refId": "A",
+          "query": "SELECT sum(\"count\") AS hits FROM (SELECT count(\"url\") AS \"count\" FROM \"phishing_candidates\" WHERE $timeFilter AND (\"source\" =~ /^$source$/) GROUP BY \"domain\") GROUP BY \"domain\" ORDER BY desc LIMIT 10"
+        }
+      ]
+    },
+    {
+      "title": "Últimos 100 eventos (phishing_candidates)",
+      "type": "table",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 9 },
+      "options": {
+        "showHeader": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "align": "auto" }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "format": "table",
+          "policy": "default",
+          "rawQuery": true,
+          "refId": "A",
+          "query": "SELECT \"source\",\"domain\",\"url\",\"ip\",\"spamhaus_score\" FROM \"phishing_candidates\" WHERE $timeFilter AND (\"source\" =~ /^$source$/) ORDER BY time DESC LIMIT 100"
+        }
+      ]
+    },
+    {
+      "title": "Notificaciones por email (éxitos vs total)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 19 },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "right" },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "format": "time_series",
+          "policy": "default",
+          "rawQuery": true,
+          "refId": "A",
+          "query": "SELECT count(\"sent\") FROM \"notifications\" WHERE $timeFilter AND (\"channel\" =~ /^$channel$/) GROUP BY time($__interval), \"channel\" fill(null)"
+        },
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "format": "time_series",
+          "policy": "default",
+          "rawQuery": true,
+          "refId": "B",
+          "query": "SELECT count(\"sent\") FROM \"notifications\" WHERE $timeFilter AND (\"channel\" =~ /^$channel$/) AND \"sent\" = true GROUP BY time($__interval), \"channel\" fill(null)"
+        }
+      ]
+    },
+    {
+      "title": "Últimas 50 notificaciones (detalle)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 19 },
+      "options": {
+        "showHeader": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "align": "auto" }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "format": "table",
+          "policy": "default",
+          "rawQuery": true,
+          "refId": "A",
+          "query": "SELECT \"sent\",\"count\",\"recipients\",\"subject\",\"extra\" FROM \"notifications\" WHERE $timeFilter AND (\"channel\" =~ /^$channel$/) ORDER BY time DESC LIMIT 50"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["zelcon", "phishing", "notifications"],
+  "templating": {
+    "list": [
+      {
+        "name": "source",
+        "type": "query",
+        "hide": 0,
+        "datasource": "${DS_INFLUXDB}",
+        "refresh": 2,
+        "query": "SHOW TAG VALUES FROM \"phishing_candidates\" WITH KEY = \"source\"",
+        "includeAll": true,
+        "multi": true,
+        "label": "Fuente"
+      },
+      {
+        "name": "channel",
+        "type": "query",
+        "hide": 0,
+        "datasource": "${DS_INFLUXDB}",
+        "refresh": 2,
+        "query": "SHOW TAG VALUES FROM \"notifications\" WITH KEY = \"channel\"",
+        "includeAll": true,
+        "multi": true,
+        "label": "Canal"
+      }
+    ]
+  },
+  "time": { "from": "now-24h", "to": "now" },
+  "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"] },
+  "timezone": "browser",
+  "title": "ZELCON – Phishing & Notifications",
+  "version": 1
+}
